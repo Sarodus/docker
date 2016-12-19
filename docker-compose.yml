@@ -29,10 +29,11 @@ services:
       APP_DEBUG: "true"
     volumes:
       - ./www/sanic_test:/data
-      - python-packages:/usr/local/lib/python2.7/site-packages
+      - python-packages:/usr/local/lib/python3.5/site-packages
+      - run:/var/run
     working_dir: /data
     entrypoint: sh
-    command: -c "python run.py"
+    command: -c "pip install -r requirements.txt;python run.py"
 
   #########################################
   # Cache, DB and Task processor services #
