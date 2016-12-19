@@ -1,0 +1,78 @@
+version: "2"
+services:
+
+  ############
+  # FRONTEND #
+  ############
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"     # HTTP
+    volumes:
+      - run:/var/run
+      - ./www:/var/www
+      - ./build/nginx/sites:/etc/nginx/conf.d
+      - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  sanic:
+    image: python:3.5
+    links:
+      - redis
+      - mongo
+      - mysql
+    environment:
+      REDIS_PORT: redis
+      MYSQL_PORT: mysql
+      MYSQL_PASSWORD: password
+      MONGO_PORT: mongo
+      APP_DEBUG: "true"
+    volumes:
+      - ./www/sanic_test:/data
+      - python-packages:/usr/local/lib/python2.7/site-packages
+    working_dir: /data
+    entrypoint: sh
+    command: -c "python run.py"
+
+  #########################################
+  # Cache, DB and Task processor services #
+  #########################################
+
+  mongo:
+    image: mongo:3.2
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    mem_limit: 2147483648
+
+  redis:
+    image: redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  mysql:
+    image: mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./build/sqlmode.cnf:/etc/mysql/conf.d/sqlmode.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: promosonline
+
+volumes:
+  redis-data:
+    driver: local
+  mysql-data:
+    driver: local
+  mongo-data:
+    driver: local
+  run:
+    driver: local
+  python-packages:
+    driver: local
