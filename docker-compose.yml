@@ -1,14 +1,10 @@
 version: "2"
 services:
 
-  ############
-  # FRONTEND #
-  ############
-
   nginx:
-    image: nginx:alpine
+    image: nginx
     ports:
-      - "80:80"     # HTTP
+      - "80:80"
     volumes:
       - run:/var/run
       - ./www:/var/www
@@ -17,62 +13,70 @@ services:
 
   sanic:
     image: python:3.5
-    links:
-      - redis
-      - mongo
-      - mysql
-    environment:
-      REDIS_PORT: redis
-      MYSQL_PORT: mysql
-      MYSQL_PASSWORD: password
-      MONGO_PORT: mongo
-      APP_DEBUG: "true"
+    build:
+      context: build/python
     volumes:
       - ./www/sanic_test:/data
       - python-packages:/usr/local/lib/python3.5/site-packages
       - run:/var/run
     working_dir: /data
     entrypoint: sh
-    command: -c "pip install -r requirements.txt;python run.py"
+    command: -c "python run.py"
 
-  #########################################
-  # Cache, DB and Task processor services #
-  #########################################
+  #mcp:
+  #  image: python:3.5
+  #  links:
+  #    - redis
+  #    - mongo
+  #    - mysql
+  #  environment:
+  #    REDIS_PORT: redis
+  #    MYSQL_PORT: mysql
+  #    MYSQL_PASSWORD: password
+  #    MONGO_PORT: mongo
+  #    APP_DEBUG: "true"
+  #  volumes:
+  #    - ./www/mcp:/data
+  #    - python-packages:/usr/local/lib/python3.5/site-packages
+  #    - run:/var/run
+  #  working_dir: /data
+  #  entrypoint: sh
+  #  command: -c "python run.py"
 
-  mongo:
-    image: mongo:3.2
-    volumes:
-      - mongo-data:/data/db
-    ports:
-      - "27017:27017"
-    mem_limit: 2147483648
-
-  redis:
-    image: redis
-    volumes:
-      - redis-data:/data
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes
-
-  mysql:
-    image: mysql
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./build/sqlmode.cnf:/etc/mysql/conf.d/sqlmode.cnf
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: promosonline
+#  mongo:
+#    image: mongo:3.2
+#    volumes:
+#      - mongo-data:/data/db
+#    ports:
+#      - "27017:27017"
+#    mem_limit: 2147483648
+#
+#  redis:
+#    image: redis
+#    volumes:
+#      - redis-data:/data
+#    ports:
+#      - "6379:6379"
+#    command: redis-server --appendonly yes
+#
+#  mysql:
+#    image: mysql
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+#      - ./build/sqlmode.cnf:/etc/mysql/conf.d/sqlmode.cnf
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: password
+#      MYSQL_DATABASE: base
 
 volumes:
-  redis-data:
-    driver: local
-  mysql-data:
-    driver: local
-  mongo-data:
-    driver: local
+#  redis-data:
+#    driver: local
+#  mysql-data:
+#    driver: local
+#  mongo-data:
+#    driver: local
   run:
     driver: local
   python-packages:
