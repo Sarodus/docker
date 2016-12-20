@@ -21,7 +21,7 @@ services:
       - run:/var/run
     working_dir: /data
     entrypoint: sh
-    command: -c "python run.py"
+    command: -c "python run.py runserver"
 
   #mcp:
   #  image: python:3.5
