@@ -4,7 +4,7 @@ import click
 
 from app.base import app
 from scripts.random_users import get_random_users
-from app.db import Base, engine, session
+from app.db import Base, engine, Session
 from app.models import User
 
 SOCK_FILE = '/var/run/sanic.sock'
@@ -29,8 +29,9 @@ def runserver():
 @cli.command()
 @click.option('--number', default=10, type=click.IntRange(1, 1000))
 def fill_db(number):
-    session.add_all(get_random_users(number))
-    session.commit()
+    sess = Session()
+    sess.add_all(get_random_users(number))
+    sess.commit()
 
 
 @cli.command()

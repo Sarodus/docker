@@ -1,5 +1,8 @@
 # Enter debug mode into image
-
 dc run --rm --entrypoint sh sanic_test
 
+# Enter image shell
+dc exec sanic_test sh
 
+# Start all
+dc up -d

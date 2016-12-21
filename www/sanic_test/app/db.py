@@ -6,6 +6,7 @@ from app.base import app
 engine = create_engine(app.config.SQLALCHEMY_DATABASE_URI)
 Base = declarative_base()
 Base.metadata.create_all(engine)
-sm = sessionmaker()
-sm.configure(bind=engine)
-session = sm()
+Session = sessionmaker()
+Session.configure(bind=engine)
+
+# Use `session = Session()` to get a db session
