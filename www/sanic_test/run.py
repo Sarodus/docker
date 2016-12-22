@@ -23,7 +23,7 @@ def cli():
 
 @cli.command()
 def runserver():
-    app.run(sock=sock, host=None, port=None, workers=4)
+    app.run(sock=sock, host=None, port=None, workers=4, debug=True)
 
 
 @cli.command()

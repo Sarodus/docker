@@ -7,8 +7,9 @@ from .config import MyConfig
 app = Sanic()
 app.config = MyConfig()
 
-from .views.user import user_bp
-app.blueprint(user_bp)
+from .views.api import register_routes
+register_routes(app)
+
 
 @app.route("/", methods=["GET"])
 async def hello(request):
