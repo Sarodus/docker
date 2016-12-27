@@ -1,8 +1,11 @@
+# Make an alias (optional)
+alias dc="docker-compose"
+
 # Enter debug mode into image
-dc run --rm --entrypoint sh sanic_test
+dc run --rm --entrypoint sh sanic
 
 # Enter image shell
-dc exec sanic_test sh
+dc exec sanic sh
 
 # Start all
 dc up -d

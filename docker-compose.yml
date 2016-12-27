@@ -11,6 +11,7 @@ services:
       - ./build/nginx/sites:/etc/nginx/conf.d
       - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
 
+
   sanic:
     image: python:3.5
     build:
@@ -23,25 +24,51 @@ services:
     entrypoint: sh
     command: -c "python run.py runserver"
 
-  #mcp:
-  #  image: python:3.5
-  #  links:
-  #    - redis
-  #    - mongo
-  #    - mysql
-  #  environment:
-  #    REDIS_PORT: redis
-  #    MYSQL_PORT: mysql
-  #    MYSQL_PASSWORD: password
-  #    MONGO_PORT: mongo
-  #    APP_DEBUG: "true"
-  #  volumes:
-  #    - ./www/mcp:/data
-  #    - python-packages:/usr/local/lib/python3.5/site-packages
-  #    - run:/var/run
-  #  working_dir: /data
-  #  entrypoint: sh
-  #  command: -c "python run.py"
+
+  creator:
+    image: python:3.5
+    build:
+      context: build/python
+    links:
+      - redis
+      - postgres
+    volumes:
+      - ./www/creator:/data
+      - python-packages:/usr/local/lib/python3.5/site-packages
+      - bin:/usr/local/bin
+      - run:/var/run
+    working_dir: /data
+    entrypoint: sh
+    environment:
+      FLASK_APP: /data/manage.py
+      REDIS_HOST: redis
+      DB_HOST: postgres
+      DB_USER: user
+      DB_PASSWORD: password
+      DEFAULT_DB: base
+    command: -c "gunicorn manage:app -b unix:/var/run/creator.sock -k gevent --workers=2 --pid /tmp/creator.pid --reload"
+
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: base
+
+
+  redis:
+    image: redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
 
 #  mongo:
 #    image: mongo:3.2
@@ -51,33 +78,20 @@ services:
 #      - "27017:27017"
 #    mem_limit: 2147483648
 #
-#  redis:
-#    image: redis
-#    volumes:
-#      - redis-data:/data
-#    ports:
-#      - "6379:6379"
-#    command: redis-server --appendonly yes
 #
-#  mysql:
-#    image: mysql
-#    volumes:
-#      - mysql-data:/var/lib/mysql
-#      - ./build/sqlmode.cnf:/etc/mysql/conf.d/sqlmode.cnf
-#    ports:
-#      - "3306:3306"
-#    environment:
-#      MYSQL_ROOT_PASSWORD: password
-#      MYSQL_DATABASE: base
 
 volumes:
-#  redis-data:
-#    driver: local
-#  mysql-data:
-#    driver: local
-#  mongo-data:
-#    driver: local
+  redis-data:
+    driver: local
+  mysql-data:
+    driver: local
+  # mongo-data:
+  #   driver: local
+  postgres-data:
+    driver: local
   run:
     driver: local
   python-packages:
+    driver: local
+  bin:
     driver: local
