@@ -39,6 +39,8 @@ services:
       - run:/var/run
     working_dir: /data
     entrypoint: sh
+    env_file:
+      ./www/creator/.env
     environment:
       FLASK_APP: /data/manage.py
       REDIS_HOST: redis
