@@ -70,6 +70,18 @@ services:
     command: redis-server --appendonly yes
 
 
+  node:
+    image: node:6
+    build:
+      context: build/node
+    volumes:
+      - run:/var/run
+      - ./www:/var/www
+    environment:
+      NODE_ENV: development
+    stop_signal: SIGINT
+    working_dir: /var/www
+
 #  mongo:
 #    image: mongo:3.2
 #    volumes:
@@ -77,8 +89,6 @@ services:
 #    ports:
 #      - "27017:27017"
 #    mem_limit: 2147483648
-#
-#
 
 volumes:
   redis-data:

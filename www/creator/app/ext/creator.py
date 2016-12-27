@@ -58,18 +58,11 @@ class MyCreation(object):
     base_js = [
         '/vendor/jquery/dist/jquery.min.js',
         '/vendor/bootstrap/dist/js/bootstrap.min.js',
-        '/vendor/jquery_lazyload/jquery.lazyload.js',
-        '/vendor/html5shiv/dist/html5shiv-printshiv.js',
-        '/init.js',
-        '/general.js',
-        '/ajax-intercept.js',
     ]
 
     base_css = [
         '/vendor/bootstrap/dist/css/bootstrap.min.css',
-        '/vendor/bootstrap-ms/bootstrap_ms.css',
-        '/main.css',
-        '/transition.css',
+        '/css/style.css',
     ]
 
     def __init__(self, creation):
