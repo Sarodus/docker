@@ -1,4 +1,4 @@
-from os.path import isfile
+from os.path import isfile, join
 
 from flask import current_app, redirect, request, url_for, render_template, g
 from flask_classful import FlaskView, route
@@ -119,16 +119,26 @@ class Component(FlaskView):
         cls._load_js()
         cls._load_css()
 
-    @staticmethod
-    def _load_js():
+    @classmethod
+    def _load_js(cls):
         """Load js assets from this class"""
 
-        print('Calculate JS assets')
+        file = '/static/js/components/%s.js' % cls.type
+        file_path = join(current_app.config['BASE_DIR'], 'static/js/components/%s.js' % cls.type)
 
-    @staticmethod
-    def _load_css():
+        if isfile(file_path):
+            add_css(file)
+
+    @classmethod
+    def _load_css(cls):
         """Load css assets from this class"""
-        print('Calculate CSS assets')
+
+        file = '/static/css/components/%s.css' % cls.type
+        file_path = join(current_app.config['BASE_DIR'], 'static/css/components/%s.css' % cls.type)
+
+        if isfile(file_path):
+            add_css(file)
+
 
     @classmethod
     def get_current(cls):

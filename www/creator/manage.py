@@ -60,6 +60,7 @@ def make_dummy_seed():
         pages = (
             ('page1', (
                 {'name':'TOP', 'type':'media', 'config':{'length':5}},
+                {'name':'Twitter', 'type':'twitter', 'config':{'account_id':403614288}},
             )),
             ('page2', (
                 {'name':'POLL Z', 'type':'poll', 'config':{'id_poll':123}},

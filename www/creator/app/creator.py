@@ -54,7 +54,7 @@ class CreatorApp(Flask):
 
 def configure_app(app):
     app.config.from_object('config.Config')
-    app.template_folder = app.config['BASE_DIR'] + 'app/templates/'
+    app.template_folder = app.config['BASE_DIR'] + '/app/templates/'
 
 def configure_extensions(app):
     # flask-sqlalchemy
