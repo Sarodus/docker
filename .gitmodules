@@ -1,3 +1,6 @@
 [submodule "www/tests"]
 	path = www/tests
 	url = https://github.com/Sarodus/tests
+[submodule "www/sanic_test"]
+	path = www/sanic_test
+	url = https://github.com/Sarodus/sanic_test
