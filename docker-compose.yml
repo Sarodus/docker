@@ -12,6 +12,18 @@ services:
       - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
 
 
+  autosqla:
+    image: python:3.5
+    build:
+      context: build/python
+    volumes:
+      - ./www/autosqla:/data
+      - python-packages:/usr/local/lib/python3.5/site-packages
+      - run:/var/run
+    working_dir: /data
+    entrypoint: sh
+
+
   sanic:
     image: python:3.5
     build:

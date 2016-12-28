@@ -12,4 +12,4 @@ dc up -d
 
 
 # Git update all submodules
-git submodule update --recursive --remote
+git pull --recurse-submodules
