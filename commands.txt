@@ -9,3 +9,7 @@ dc exec sanic sh
 
 # Start all
 dc up -d
+
+
+# Git update all submodules
+git submodule update --recursive --remote
