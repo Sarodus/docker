@@ -1,0 +1,3 @@
+[submodule "www/tests"]
+	path = www/tests
+	url = https://github.com/Sarodus/tests
