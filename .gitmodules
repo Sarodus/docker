@@ -7,3 +7,6 @@
 [submodule "www/creator"]
 	path = www/creator
 	url = https://github.com/Sarodus/creator
+[submodule "www/autosqla"]
+	path = www/autosqla
+	url = https://github.com/Sarodus/autosqla
