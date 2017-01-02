@@ -10,3 +10,6 @@
 [submodule "www/autosqla"]
 	path = www/autosqla
 	url = https://github.com/Sarodus/autosqla
+[submodule "www/TeleCatBot"]
+	path = www/TeleCatBot
+	url = https://github.com/Sarodus/TeleCatBot

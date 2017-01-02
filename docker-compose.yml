@@ -12,6 +12,25 @@ services:
       - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
 
 
+  telecatbot:
+    image: python:3.5
+    build:
+      context: build/python
+    links:
+      - redis
+    volumes:
+      - ./www/telecatbot:/data
+      - python-packages:/usr/local/lib/python3.5/site-packages
+      - run:/var/run
+    env_file:
+      ./www/creator/.env
+    environment:
+      REDIS_HOST: redis
+    working_dir: /data
+    entrypoint: sh
+    command: -c "python manage.py"
+
+
   autosqla:
     image: python:3.5
     build:
